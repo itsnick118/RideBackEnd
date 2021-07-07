@@ -13,10 +13,11 @@ using System.Web.Http.Cors;
 
 namespace Runnnnnnnnnn.Controllers
 {
+
     [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
     public class membersController : ApiController
     {
-        private RideOClock4Entities db = new RideOClock4Entities();
+        private RideOClock4Entities1 db = new RideOClock4Entities1();
 
         // GET: api/members
         public IQueryable<member> Getmembers()

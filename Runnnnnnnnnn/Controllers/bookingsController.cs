@@ -9,14 +9,12 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Runnnnnnnnnn.Models;
-using System.Web.Http.Cors;
 
 namespace Runnnnnnnnnn.Controllers
 {
-    [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
     public class bookingsController : ApiController
     {
-        private RideOClock4Entities db = new RideOClock4Entities();
+        private RideOClock4Entities1 db = new RideOClock4Entities1();
 
         // GET: api/bookings
         public IQueryable<booking> Getbookings()

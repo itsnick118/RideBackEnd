@@ -20,8 +20,8 @@ namespace Runnnnnnnnnn.Models
         public string gender { get; set; }
         public string mobile { get; set; }
         public string email { get; set; }
-        public string address { get; set; }
         public string drivinglic { get; set; }
-        public byte[] img { get; set; }
+        public string address { get; set; }
+        public string password { get; set; }
     }
 }

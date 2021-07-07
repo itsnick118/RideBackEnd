@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="RideOClock4ModelStoreContainer" CdmEntityContainer="RideOClock4Entities">
+  <EntityContainerMapping StorageEntityContainer="RideOClock4ModelStoreContainer" CdmEntityContainer="RideOClock4Entities1">
     <EntitySetMapping Name="bookings">
       <EntityTypeMapping TypeName="RideOClock4Model.booking">
         <MappingFragment StoreEntitySet="booking">
@@ -22,9 +22,9 @@
           <ScalarProperty Name="gender" ColumnName="gender" />
           <ScalarProperty Name="mobile" ColumnName="mobile" />
           <ScalarProperty Name="email" ColumnName="email" />
-          <ScalarProperty Name="address" ColumnName="address" />
           <ScalarProperty Name="drivinglic" ColumnName="drivinglic" />
-          <ScalarProperty Name="img" ColumnName="img" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="password" ColumnName="password" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

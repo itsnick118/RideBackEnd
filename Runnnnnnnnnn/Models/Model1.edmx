@@ -26,9 +26,9 @@
           <Property Name="gender" Type="varchar" MaxLength="50" />
           <Property Name="mobile" Type="varchar" MaxLength="50" />
           <Property Name="email" Type="varchar" MaxLength="50" />
-          <Property Name="address" Type="nchar" MaxLength="10" />
           <Property Name="drivinglic" Type="varchar" MaxLength="50" />
-          <Property Name="img" Type="image" />
+          <Property Name="address" Type="varchar" MaxLength="50" />
+          <Property Name="password" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="user">
           <Key>
@@ -69,9 +69,9 @@
           <Property Name="gender" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="address" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="drivinglic" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="img" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="user">
           <Key>
@@ -81,7 +81,7 @@
           <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityContainer Name="RideOClock4Entities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="RideOClock4Entities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="bookings" EntityType="Self.booking" />
           <EntitySet Name="members" EntityType="Self.member" />
           <EntitySet Name="users" EntityType="Self.user" />
@@ -91,7 +91,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="RideOClock4ModelStoreContainer" CdmEntityContainer="RideOClock4Entities">
+        <EntityContainerMapping StorageEntityContainer="RideOClock4ModelStoreContainer" CdmEntityContainer="RideOClock4Entities1">
           <EntitySetMapping Name="bookings">
             <EntityTypeMapping TypeName="RideOClock4Model.booking">
               <MappingFragment StoreEntitySet="booking">
@@ -113,9 +113,9 @@
                 <ScalarProperty Name="gender" ColumnName="gender" />
                 <ScalarProperty Name="mobile" ColumnName="mobile" />
                 <ScalarProperty Name="email" ColumnName="email" />
-                <ScalarProperty Name="address" ColumnName="address" />
                 <ScalarProperty Name="drivinglic" ColumnName="drivinglic" />
-                <ScalarProperty Name="img" ColumnName="img" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="password" ColumnName="password" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -13,10 +13,10 @@ namespace Runnnnnnnnnn.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class RideOClock4Entities : DbContext
+    public partial class RideOClock4Entities1 : DbContext
     {
-        public RideOClock4Entities()
-            : base("name=RideOClock4Entities")
+        public RideOClock4Entities1()
+            : base("name=RideOClock4Entities1")
         {
         }
     

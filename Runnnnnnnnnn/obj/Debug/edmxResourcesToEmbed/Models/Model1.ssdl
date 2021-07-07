@@ -21,9 +21,9 @@
     <Property Name="gender" Type="varchar" MaxLength="50" />
     <Property Name="mobile" Type="varchar" MaxLength="50" />
     <Property Name="email" Type="varchar" MaxLength="50" />
-    <Property Name="address" Type="nchar" MaxLength="10" />
     <Property Name="drivinglic" Type="varchar" MaxLength="50" />
-    <Property Name="img" Type="image" />
+    <Property Name="address" Type="varchar" MaxLength="50" />
+    <Property Name="password" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="user">
     <Key>
