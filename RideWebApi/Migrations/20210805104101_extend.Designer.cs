@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RideWebApi.Data;
 
 namespace RideWebApi.Migrations
 {
     [DbContext(typeof(RideContext))]
-    partial class RideContextModelSnapshot : ModelSnapshot
+    [Migration("20210805104101_extend")]
+    partial class extend
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -75,9 +77,6 @@ namespace RideWebApi.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("car")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("cartype")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("firstName")

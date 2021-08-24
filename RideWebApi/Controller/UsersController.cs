@@ -2,46 +2,54 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RideWebApi.Data;
+using RideWebApi.DTO;
+using RideWebApi.Extensions;
+using RideWebApi.Interfaces;
 using RideWebApi.Models;
 
 namespace RideWebApi.Controllers
 {
     //[EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
+    [Authorize]
     public class UsersController : BaseApiController
     {
-        private readonly RideContext _context;
+        private readonly IUserRepository _userRepository;
+        private readonly IBookingRepository _bookingRepository;
+        private readonly IMapper _mapper;
 
-        public UsersController(RideContext context)
+     
+
+        public UsersController(IUserRepository userRepository,IBookingRepository bookingRepository, IMapper mapper)
         {
-            _context = context;
+            _userRepository = userRepository;
+            _bookingRepository = bookingRepository;
+            _mapper = mapper;
         }
 
         // GET: api/Users
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult<IEnumerable<Appuser>>> GetAppusers()
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetAppusers()
         {
-            return await _context.Appusers.ToListAsync();
+            var users = await _userRepository.GetUsersAsync();
+            var usersToReturn = _mapper.Map<IEnumerable<MemberDto>>(users);
+            return Ok(usersToReturn);
         }
 
-        [Authorize]
+      
         // GET: api/Users/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Appuser>> GetAppuser(int id)
+        [HttpGet("{username}")]
+        public async Task<ActionResult<MemberDto>> GetAppuser(string username)
         {
-            var appuser = await _context.Appusers.FindAsync(id);
+            var user = await _userRepository.GetUserByUsernameAsync(username);
 
-            if (appuser == null)
-            {
-                return NotFound();
-            }
-
-            return appuser;
+            return _mapper.Map<MemberDto>(user);
         }
 
         // PUT: api/Users/5
@@ -49,29 +57,7 @@ namespace RideWebApi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAppuser(int id, Appuser appuser)
         {
-            if (id != appuser.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(appuser).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AppuserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+    
             return NoContent();
         }
 
@@ -80,9 +66,6 @@ namespace RideWebApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Appuser>> PostAppuser(Appuser appuser)
         {
-            _context.Appusers.Add(appuser);
-            await _context.SaveChangesAsync();
-
             return CreatedAtAction("GetAppuser", new { id = appuser.Id }, appuser);
         }
 
@@ -90,21 +73,19 @@ namespace RideWebApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAppuser(int id)
         {
-            var appuser = await _context.Appusers.FindAsync(id);
-            if (appuser == null)
-            {
-                return NotFound();
-            }
-
-            _context.Appusers.Remove(appuser);
-            await _context.SaveChangesAsync();
-
             return NoContent();
         }
-
-        private bool AppuserExists(int id)
+        [AllowAnonymous]
+        [HttpPost("add-booking")]
+        public async Task<ActionResult<BookingDto>> AddBooking(Booking booking)
         {
-            return _context.Appusers.Any(e => e.Id == id);
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+            var newbooking = await _bookingRepository.AddBooking(booking);
+            user.Bookings.Add(newbooking);
+            return CreatedAtAction("GetBooking", new { id = booking.Id }, booking);
+            return Ok(newbooking);
         }
+
+
     }
 }

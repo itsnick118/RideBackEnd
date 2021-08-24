@@ -14,8 +14,10 @@ using RideApi.Services;
 using RideWebApi.Data;
 using RideWebApi.Extensions;
 using RideWebApi.Interfaces;
+using RideWebApi.Services;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,6 +37,8 @@ namespace RideWebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+           // var emailConfig = Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
+         //   services.AddSingleton(emailConfig);
             services.AddApplicationServices(_config);
             services.AddControllers();
             services.AddSwaggerGen(c =>

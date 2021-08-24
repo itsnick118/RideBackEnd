@@ -14,6 +14,7 @@ namespace RideWebApi.Data
 
             }
             public DbSet<Appuser> Appusers { get; set; }
+            public DbSet<RideWebApi.Models.Booking> Booking { get; set; }
         
     }
 }

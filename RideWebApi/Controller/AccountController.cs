@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RideWebApi.Data;
 using RideWebApi.DTO;
@@ -20,10 +21,12 @@ namespace RideWebApi.Controllers
 
 
         private readonly ITokenService _tokenService;
+        private readonly IMapper _mapper;
 
-        public AccountController(RideContext context, ITokenService tokenService)
+        public AccountController(RideContext context, ITokenService tokenService,IMapper mapper)
         {
             _tokenService = tokenService;
+            _mapper = mapper;
             _context = context;
 
         }
@@ -33,15 +36,16 @@ namespace RideWebApi.Controllers
         {
             if (await UserExists(registerdto.Username)) return BadRequest("username is taken");
 
+            var user = _mapper.Map<Appuser>(registerdto);
 
             using var hmac = new HMACSHA512();
 
-            var user = new Appuser
-            {
-                Username = registerdto.Username.ToLower(),
-                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerdto.Password)),
-                PasswordSalt = hmac.Key
-            };
+
+
+            user.Username = registerdto.Username.ToLower();
+            user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerdto.Password));
+            user.PasswordSalt = hmac.Key;
+            
 
             _context.Appusers.Add(user);
 

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RideWebApi.Data;
 
 namespace RideWebApi.Migrations
 {
     [DbContext(typeof(RideContext))]
-    partial class RideContextModelSnapshot : ModelSnapshot
+    [Migration("20210731130310_Bookin")]
+    partial class Bookin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,14 +28,14 @@ namespace RideWebApi.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("datetime2");
-
                     b.Property<byte[]>("PasswordHash")
                         .HasColumnType("varbinary(max)");
 
                     b.Property<byte[]>("PasswordSalt")
                         .HasColumnType("varbinary(max)");
+
+                    b.Property<int?>("PhotosId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");
@@ -61,6 +63,8 @@ namespace RideWebApi.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("PhotosId");
+
                     b.ToTable("Appusers");
                 });
 
@@ -77,9 +81,6 @@ namespace RideWebApi.Migrations
                     b.Property<string>("car")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("cartype")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("firstName")
                         .HasColumnType("nvarchar(max)");
 
@@ -91,6 +92,36 @@ namespace RideWebApi.Migrations
                     b.HasIndex("AppuserId");
 
                     b.ToTable("Bookings");
+                });
+
+            modelBuilder.Entity("RideWebApi.Models.Photo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("IsMain")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PublicId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Photo");
+                });
+
+            modelBuilder.Entity("RideWebApi.Models.Appuser", b =>
+                {
+                    b.HasOne("RideWebApi.Models.Photo", "Photos")
+                        .WithMany()
+                        .HasForeignKey("PhotosId");
+
+                    b.Navigation("Photos");
                 });
 
             modelBuilder.Entity("RideWebApi.Models.Booking", b =>
