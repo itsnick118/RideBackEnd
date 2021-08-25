@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
+using RideWebApi.DTO;
 using RideWebApi.Interfaces;
 using RideWebApi.Models;
 using System;
@@ -11,9 +14,11 @@ namespace RideWebApi.Data
     public class UserRepository : IUserRepository
     {
         private readonly RideContext _context;
+        private readonly IMapper _mapper;
 
-        public UserRepository(RideContext context)
+        public UserRepository(RideContext context, IMapper mapper)
         {
+            _mapper = mapper;
             _context = context;
         }
 
@@ -34,10 +39,24 @@ namespace RideWebApi.Data
                 .Include(p => p.Bookings)
                 .ToListAsync();
         }
-
-        public Task<bool> SaveAllAync()
+        public async Task<MemberDto> GetMemberAsync(string username)
         {
-            throw new NotImplementedException();
+            return await _context.Appusers
+                .Where(x => x.Username == username)
+                .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
+                .SingleOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<MemberDto>> GetMembersAsync()
+        {
+            return await _context.Appusers
+                .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+        }
+
+        public async Task<bool> SaveAllAsync()
+        {
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public void Update(Appuser user)

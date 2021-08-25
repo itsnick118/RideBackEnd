@@ -12,8 +12,8 @@ namespace RideWebApi.Models
         public int Id { get; set; }
         public string firstName { get; set; }
         public string lastName { get; set; }
-        //public DateTime startDate { get; set; }
-        //public DateTime endDate { get; set; } = DateTime.Now;
+        public DateTime startDate { get; set; }
+        public DateTime endDate { get; set; }
         public string car { get; set; }
         public string cartype { get; set; }
         public Appuser Appuser { get; set; }

@@ -1,4 +1,5 @@
-﻿using RideWebApi.Models;
+﻿using RideWebApi.DTO;
+using RideWebApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,12 @@ namespace RideWebApi.Interfaces
     public interface IUserRepository
     {
         void Update(Appuser user);
-        Task<bool> SaveAllAync();
+        Task<bool> SaveAllAsync();
         Task<IEnumerable<Appuser>> GetUsersAsync();
         Task<Appuser> GetUserByIdAsync(int id);
         Task<Appuser> GetUserByUsernameAsync(string username);
-        
+        Task<IEnumerable<MemberDto>> GetMembersAsync();
+        Task<MemberDto> GetMemberAsync(string username);
+
     }
 }

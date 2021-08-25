@@ -23,9 +23,13 @@ namespace RideWebApi.Extensions
             // services.AddDbContext<RideWebApi.Models.RideContext>();
             services.AddDbContext<RideContext>(options =>
             {
-                options.UseSqlServer(config.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(config.GetConnectionString("DefaultConnection")
+                    , sqlServerOptionsAction: sqlOptions =>
+                    {
+                        sqlOptions.EnableRetryOnFailure();
+                    }
+                    );
             });
-
             return services;
         }
     }

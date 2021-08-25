@@ -44,7 +44,7 @@ namespace RideWebApi.Controllers
 
       
         // GET: api/Users/5
-        [HttpGet("{username}")]
+        [HttpGet("{username}",Name ="GetUser")]
         public async Task<ActionResult<MemberDto>> GetAppuser(string username)
         {
             var user = await _userRepository.GetUserByUsernameAsync(username);
@@ -80,10 +80,28 @@ namespace RideWebApi.Controllers
         public async Task<ActionResult<BookingDto>> AddBooking(Booking booking)
         {
             var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
-            var newbooking = await _bookingRepository.AddBooking(booking);
-            user.Bookings.Add(newbooking);
-            return CreatedAtAction("GetBooking", new { id = booking.Id }, booking);
-            return Ok(newbooking);
+            var result = await _bookingRepository.AddBooking(booking);
+
+            //  return CreatedAtAction("GetBooking", new { id = booking.Id }, booking);
+            //return Ok(newbooking);
+            // user.Bookings.Add(newbooking);
+            var bookingss = new Booking
+            {
+                firstName = result.firstName,
+                lastName = result.lastName,
+                startDate = result.startDate,
+                endDate = result.endDate,
+                cartype = result.cartype,
+                car = result.car,
+
+            };
+            user.Bookings.Add(bookingss);
+
+            if (await _userRepository.SaveAllAsync())
+            {
+                return CreatedAtRoute("GetUser", new { username = user.Username }, _mapper.Map<BookingDto>(bookingss));
+            }
+            return BadRequest("Problem addding Booking");
         }
 
 
