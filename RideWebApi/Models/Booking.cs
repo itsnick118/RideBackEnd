@@ -18,5 +18,6 @@ namespace RideWebApi.Models
         public string cartype { get; set; }
         public Appuser Appuser { get; set; }
         public int AppuserId { get; set; }
+       
     }
 }

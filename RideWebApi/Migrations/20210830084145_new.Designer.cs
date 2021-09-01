@@ -10,7 +10,7 @@ using RideWebApi.Data;
 namespace RideWebApi.Migrations
 {
     [DbContext(typeof(RideContext))]
-    [Migration("20210824124055_new")]
+    [Migration("20210830084145_new")]
     partial class @new
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -77,31 +77,39 @@ namespace RideWebApi.Controllers
         }
         [AllowAnonymous]
         [HttpPost("add-booking")]
-        public async Task<ActionResult<BookingDto>> AddBooking(Booking booking)
+        public async Task<ActionResult<BookingDto>> AddBooking(BookingDto bookingdto)
         {
             var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
-            var result = await _bookingRepository.AddBooking(booking);
-
-            //  return CreatedAtAction("GetBooking", new { id = booking.Id }, booking);
-            //return Ok(newbooking);
-            // user.Bookings.Add(newbooking);
-            var bookingss = new Booking
-            {
-                firstName = result.firstName,
-                lastName = result.lastName,
-                startDate = result.startDate,
-                endDate = result.endDate,
-                cartype = result.cartype,
-                car = result.car,
-
-            };
-            user.Bookings.Add(bookingss);
-
+            _userRepository.Add(user);
             if (await _userRepository.SaveAllAsync())
             {
-                return CreatedAtRoute("GetUser", new { username = user.Username }, _mapper.Map<BookingDto>(bookingss));
-            }
+                return CreatedAtRoute("GetUser", new { username = user.Username }, _mapper.Map<BookingDto>(user));
+            } 
+                
+            /*  var result = await _bookingRepository.AddBooking(booking);
+
+              //  return CreatedAtAction("GetBooking", new { id = booking.Id }, booking);
+              //return Ok(newbooking);
+              // user.Bookings.Add(newbooking);
+              var bookingss = new Booking
+              {
+                  firstName = result.firstName,
+                  lastName = result.lastName,
+                  startDate = result.startDate,
+                  endDate = result.endDate,
+                  cartype = result.cartype,
+                  car = result.car,
+
+              };
+              user.Bookings.Add(bookingss);
+
+              if (await _userRepository.SaveAllAsync())
+              {
+                  return CreatedAtRoute("GetUser", new { username = user.Username }, _mapper.Map<BookingDto>(bookingss));
+              }*/
             return BadRequest("Problem addding Booking");
+          
+
         }
 
 

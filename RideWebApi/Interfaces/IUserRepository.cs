@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 namespace RideWebApi.Interfaces
 {
     public interface IUserRepository
@@ -16,6 +15,6 @@ namespace RideWebApi.Interfaces
         Task<Appuser> GetUserByUsernameAsync(string username);
         Task<IEnumerable<MemberDto>> GetMembersAsync();
         Task<MemberDto> GetMemberAsync(string username);
-
+        void Add(Appuser user);
     }
 }

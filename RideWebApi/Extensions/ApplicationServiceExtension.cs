@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MailKit;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RideApi.Services;
 using RideWebApi.Data;
 using RideWebApi.Helpers;
 using RideWebApi.Interfaces;
+using RideWebApi.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +22,7 @@ namespace RideWebApi.Extensions
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IBookingRepository, BookingRepository>();
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
+           services.AddTransient<IEmailService, EmailService>();
             // services.AddDbContext<RideWebApi.Models.RideContext>();
             services.AddDbContext<RideContext>(options =>
             {
@@ -30,6 +33,7 @@ namespace RideWebApi.Extensions
                     }
                     );
             });
+            services.Configure<EmailSettings>(config.GetSection("EmailSettings"));
             return services;
         }
     }

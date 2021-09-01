@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MimeKit;
 using RideWebApi.Data;
 using RideWebApi.DTO;
 using RideWebApi.Interfaces;
@@ -22,11 +24,13 @@ namespace RideWebApi.Controllers
 
         private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
+        private readonly IEmailService _emailService;
 
-        public AccountController(RideContext context, ITokenService tokenService,IMapper mapper)
+        public AccountController(RideContext context, ITokenService tokenService,IMapper mapper, IEmailService emailService)
         {
             _tokenService = tokenService;
             _mapper = mapper;
+            _emailService = emailService;
             _context = context;
 
         }
@@ -35,13 +39,8 @@ namespace RideWebApi.Controllers
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerdto)
         {
             if (await UserExists(registerdto.Username)) return BadRequest("username is taken");
-
             var user = _mapper.Map<Appuser>(registerdto);
-
             using var hmac = new HMACSHA512();
-
-
-
             user.Username = registerdto.Username.ToLower();
             user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerdto.Password));
             user.PasswordSalt = hmac.Key;
@@ -50,6 +49,28 @@ namespace RideWebApi.Controllers
             _context.Appusers.Add(user);
 
             await _context.SaveChangesAsync();
+
+            //sending email using Gmail SMTP
+            using (var client=new SmtpClient())
+            {
+                client.Connect("smtp.gmail.com");
+                client.Authenticate("nick96j@gmail.com", "manojdon");
+                var bodyBuilder = new BodyBuilder
+                {
+                    HtmlBody = $"<p>{registerdto.firstName}</p> <p>{registerdto.lastName}</p> <p>{registerdto.email}",
+                    TextBody = "{registerdto.firstName} \r\n { registerdto.lastName } \r\n {registerdto.email}"
+                };
+                var message = new MimeMessage
+                {
+                    Body = bodyBuilder.ToMessageBody()
+                };
+                message.From.Add(new MailboxAddress("Noreply", "nick96j@gmail.com"));
+                message.To.Add(new MailboxAddress("Testing", registerdto.email));
+                message.Subject = "New member submitted data";
+                client.Send(message);
+                client.Disconnect(true);
+            }
+            //TempData["Message"] = "Thank you for your service";
 
             return new UserDto
             {

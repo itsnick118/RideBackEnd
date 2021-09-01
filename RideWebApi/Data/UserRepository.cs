@@ -63,5 +63,10 @@ namespace RideWebApi.Data
         {
             _context.Entry(user).State = EntityState.Modified;
         }
+
+        public void Add(Appuser user)
+        {
+            _context.Appusers.Add(user);
+        }
     }
 }
