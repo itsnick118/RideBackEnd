@@ -57,8 +57,8 @@ namespace RideWebApi.Controllers
                 client.Authenticate("nick96j@gmail.com", "manojdon");
                 var bodyBuilder = new BodyBuilder
                 {
-                    HtmlBody = $"<p>{registerdto.firstName}</p> <p>{registerdto.lastName}</p> <p>{registerdto.email}",
-                    TextBody = "{registerdto.firstName} \r\n { registerdto.lastName } \r\n {registerdto.email}"
+                    HtmlBody = $"<p>you have been succefully registered to the RideOClock</p> <p>your username is :{registerdto.Username}</p><p>your password is :{registerdto.Password}</p> <p>dont forget your credentials details</p> <p> Enjoy your ride :)</p>",
+                    TextBody = "<h4>welcome to the RideOCLok</h4> "
                 };
                 var message = new MimeMessage
                 {
@@ -66,7 +66,7 @@ namespace RideWebApi.Controllers
                 };
                 message.From.Add(new MailboxAddress("Noreply", "nick96j@gmail.com"));
                 message.To.Add(new MailboxAddress("Testing", registerdto.email));
-                message.Subject = "New member submitted data";
+                message.Subject = "Welcome to RideOClock";
                 client.Send(message);
                 client.Disconnect(true);
             }
